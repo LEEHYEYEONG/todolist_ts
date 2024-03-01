@@ -18,8 +18,8 @@ export interface ICategory {
 }
 
 type newCategory = {
-  [key: string]:[];
-}
+  [key: string]: [];
+};
 
 export const categoriesState = atom<newCategory>({
   key: "categories",
@@ -31,21 +31,22 @@ export const categoryState = atom<Categories>({
   default: Categories.TO_DO,
 });
 
-const { persistAtom } = recoilPersist()
+const { persistAtom } = recoilPersist({
+  key: "toDoLocalStorage",
+  storage: localStorage,
+});
 
 export const toDoState = atom<IToDo[]>({
   key: "toDo",
   default: [],
-  effects_UNSTABLE: [persistAtom]
-  },
-);
-
+  effects_UNSTABLE: [persistAtom],
+});
 
 export const toDoSelector = selector({
   key: "toDoSelector",
   get: ({ get }) => {
     const toDos = get(toDoState);
     const category = get(categoryState);
-    return toDos.filter(toDo => toDo.category === category);
+    return toDos.filter((toDo) => toDo.category === category);
   },
-})
+});
